@@ -24,10 +24,13 @@ int main () {
 	
 	while(nHpIa >0 && nHpPlayer >0){
 		
+		// player turn ---------------------------------------------------------------------------------
+		printf ("--Player Turn--\n\n");
 		nAction = 0;
 		while(nAction != 1){
-		
-			printf ("Choose your actions\n");
+			
+			printf ("Hp restant = %d\n", nHpPlayer);
+			printf ("Choose your actions :\n\n");
 			printf (" 1) Attack\n");
 			
 			//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
@@ -44,10 +47,13 @@ int main () {
 		if (nAction == 1) {
 			
 			nHpIa-=50;
-			printf("texte %d texte", nHpIa);
-			
+	
 		}
 		
+		
+		//IA turn ---------------------------------------------------------------------------------------------
+		printf ("IA Turn\n");
+		nHpPlayer-=50;
 		
 	}
 
