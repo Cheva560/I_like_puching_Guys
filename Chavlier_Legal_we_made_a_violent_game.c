@@ -9,6 +9,7 @@ int main () {
 	int nHpPlayer=150;
 	int nHpIa=150;
 	int nAction=0;
+	int nDefense=0;
 	
 	//for(int i = 0; condition de fonctionnement; i++){}
 	
@@ -19,22 +20,26 @@ int main () {
 	}
 	
 	// OR = || 		AND = &&        NO = !
-	//OR vérification des 2 valeurs
-	//Conditions de défaite : dead Players or IA
+	//OR vérification des 2 valeurs.
+	//Conditions de défaite : dead Players or IA.
 	
 	while(nHpIa >0 && nHpPlayer >0){
 		
 		// player turn ---------------------------------------------------------------------------------
-		printf ("--Player Turn--\n\n");
-		nAction = 0;
-		while(nAction != 1){
+		printf ("\n--Player Turn--\n\n");
+		nAction = 0; 
+		nDefense = 0;
+		
+		while(nAction != 1 && nAction !=2){
 			
 			printf ("Hp restant = %d\n", nHpPlayer);
 			printf ("Choose your actions :\n\n");
 			printf (" 1) Attack\n");
+			printf (" 2) Defense\n");
 			
 			//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
 			scanf ("%d", &nAction);
+			
 		
 		}
 		
@@ -46,15 +51,43 @@ int main () {
 		
 		if (nAction == 1) {
 			
+			printf ("Attack Player\n");
+			
 			nHpIa-=50;
+			
+			
 	
+		}
+		if (nAction == 2) {
+			
+			printf ("Defense Player\n");
+			
+			nDefense = 1;
+			
 		}
 		
 		
 		//IA turn ---------------------------------------------------------------------------------------------
-		printf ("IA Turn\n");
-		nHpPlayer-=50;
+		printf ("\nIA Turn\n");
+	
+	
 		
+		if (nDefense == 1) {
+			
+			printf ("Attack in defense IA\n");
+			
+			nHpPlayer-=40/4;  
+			
+			
+		}
+		else {
+			
+			printf ("Attack IA\n");
+			
+			nHpPlayer-=40;
+			
+			
+		}
 	}
 
 
