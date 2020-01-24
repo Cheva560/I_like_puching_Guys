@@ -2,13 +2,21 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+struct Entity {
+	
+	int HP;
+	int MP;
+	int defense;
+	int poison;
+	
+}
 
 int main () { 
 
-	int nHpPlayer=150;
-	int nHpIa=150;
-	int nAction=0;
+
+	struct Entity player = {150, 5, 0, 0};
+	struct Entity IA = {150, 5, 0, 0};
+	int nAction = 0;
 	
 	//for(int i = 0; condition de fonctionnement; i++){}
 	
@@ -22,14 +30,14 @@ int main () {
 	//OR vérification des 2 valeurs
 	//Conditions de défaite : dead Players or IA
 	
-	while(nHpIa >0 && nHpPlayer >0){
+	while(IA.HP >0 && player.HP >0){
 		
 		// player turn ---------------------------------------------------------------------------------
 		printf ("--Player Turn--\n\n");
 		nAction = 0;
 		while(nAction != 1){
 			
-			printf ("Hp restant = %d\n", nHpPlayer);
+			printf ("Hp restant = %d\n", player.HP);
 			printf ("Choose your actions :\n\n");
 			printf (" 1) Attack\n");
 			
@@ -46,14 +54,14 @@ int main () {
 		
 		if (nAction == 1) {
 			
-			nHpIa-=50;
+			IA.HP-=50;
 	
 		}
 		
 		
 		//IA turn ---------------------------------------------------------------------------------------------
 		printf ("IA Turn\n");
-		nHpPlayer-=50;
+		player.HP -= 40;
 		
 	}
 
