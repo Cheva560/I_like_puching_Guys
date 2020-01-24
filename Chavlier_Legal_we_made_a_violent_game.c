@@ -13,7 +13,8 @@ struct Entity {
 
 int main () { 
 
-
+	srand (time (NULL));
+	
 	struct Entity player = {150, 5, 0, 0};
 	struct Entity IA = {150, 5, 0, 0};
 	int nAction = 0;
@@ -35,7 +36,7 @@ int main () {
 		// player turn ---------------------------------------------------------------------------------
 		printf ("\n--Player Turn--\n\n");
 		nAction = 0; 
-		nDefense = 0;
+		player.defense = 0;
 		
 		while(nAction != 1 && nAction !=2){
 			
@@ -74,23 +75,35 @@ int main () {
 		
 		
 		//IA turn ---------------------------------------------------------------------------------------------
+		
+		nAction=rand()%2;
+		
 		printf ("IA Turn\n");
 
 	
-		
-		if (player.defense == 1) {
+		if(nAction==0){
 			
-			printf ("Attack in defense IA\n");
-			
-			player.HP-=40/4;  
-			
+			if (player.defense == 1) {
+				
+				printf ("Attack in defense IA\n");
+				
+				player.HP-=40/4;  
+				
+				
+			}
+			else if(player.defense == 0){
+				
+				printf ("Attack IA\n");
+				
+				player.HP-=40;
+				
+				
+			}
 			
 		}
-		else {
+		//A faire defense IA
+		if(nAction==2){
 			
-			printf ("Attack IA\n");
-			
-			player.HP-=40;
 			
 			
 		}
