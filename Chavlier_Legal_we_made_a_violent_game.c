@@ -18,6 +18,7 @@ int main () {
 	struct Entity player = {150, 5, 0, 0};
 	struct Entity IA = {150, 5, 0, 0};
 	int nAction = 0;
+	int nRandom = 0;
 	
 	//for(int i = 0; condition de fonctionnement; i++){}
 	
@@ -41,13 +42,14 @@ int main () {
 		
 		while(nAction != 1 && nAction !=2){
 			
-			printf ("Hp restant = %d\n", player.HP);
+			printf ("Hp restants = %d\n\n", player.HP);
 			printf ("Choose your actions :\n\n");
 			printf (" 1) Attack\n");
 			printf (" 2) Defense\n");
 			
 			//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
 			scanf ("%d", &nAction);
+			printf("\n");
 			
 		
 		}
@@ -60,25 +62,31 @@ int main () {
 		
 		if (nAction == 1) {
 			
+			// Genere un nombre aléatoire entre 33 et 50
+			nRandom = rand() % 18 + 33;
+			
 			
 			if(IA.defense == 1) {
 				
-				printf ("Attack in defence Player \n");
+				nRandom = nRandom/4;
 				
-				IA.HP-=50/4;
+				IA.HP-=nRandom;
+				
+				printf ("The player hits IA in his defense, he makes %d damages\n", nRandom);
 				
 			}
 			else if (IA.defense == 0) {
 		
-				printf ("Attack Player\n");
-				IA.HP-=50;
+				IA.HP-=nRandom;
+				
+				printf("The player hits the IA, he makes %d damages\n", nRandom);
 				
 			}
 			
 		}
 		if (nAction == 2) {
 			
-			printf ("Defense Player\n");
+			printf ("The player defends\n");
 			
 			player.defense = 1;
 			
@@ -89,51 +97,60 @@ int main () {
 		
 		//Ia defense renitialiser dans une valeur impossible
 		
-		IA.defense = 250;
+		IA.defense = 0;
 		
-		//IA choisi entre 0 et 1
+		//sert a initialiser le while
+		nAction = -1;
 		
-		nAction=rand()%2;
-		
-		printf ("--IA Turn--\n");
-		printf ("Hp restant DE IA = %d\n", IA.HP);
-	
-		if(nAction==1){
+		// Le while sert ici a reroll l'action de l'IA si cette dernière vient a faire une action inutile comme utiliser l'antidote alors qu'elle n'est pas empoisonée de plus on ne rentre pas dans le tour de l'IA si elle est déja morte pour éviter qu'elle joue un tour en étant décédée ﾍ(￣▽￣*)ﾉ
+		while(nAction == -1 && IA.HP >0){
 			
-			if (player.defense == 1) {
+			//IA choisi entre 0 et 1	
+			nAction=rand()%2;
+			
+			printf ("\n--IA Turn--\n");
+			printf ("Hp restants DE IA = %d\n", IA.HP);
+		
+			//Attack
+			if(nAction==0){
 				
-				printf ("Attack in defense IA\n");
+				// Genere un nombre aléatoire entre 35 et 45
+				nRandom = rand() % 11 + 35;
 				
-				player.HP-=40/4;  
-				
+				if (player.defense == 1) {
+					
+					nRandom = nRandom/4;
+					
+					player.HP-=nRandom;  
+					
+					printf ("The IA attacks the player in his defense and makes %d damages\n", nRandom);
+					
+				}
+				else if(player.defense == 0){
+					
+					printf ("The IA attacks the player and makes %d damages\n", nRandom);
+					
+					player.HP-=nRandom;
+					
+					
+				}
 				
 			}
-			else if(player.defense == 0){
+			
+			//defense IA
+			if(nAction==1){
 				
-				printf ("Attack IA\n");
+				printf ("Defense IA\n");
 				
-				player.HP-=40;
-				
+				IA.defense = 1;
 				
 			}
-			
-		}
-		//defense IA
 		
-	if(nAction==0){
-			
-			printf ("Defense IA\n");
-			
-			IA.defense = 1;
-			
-			
 		}
+		
 	}
-
-
-
-
-
+	
+	printf("\n\n\nendgame");
 
 	
 	return 0 ;
