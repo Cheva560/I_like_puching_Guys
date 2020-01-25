@@ -9,7 +9,7 @@ struct Entity {
 	int defense;
 	int poison;
 	
-}
+};
 
 int main () { 
 
@@ -38,6 +38,7 @@ int main () {
 		nAction = 0; 
 		player.defense = 0;
 		
+		
 		while(nAction != 1 && nAction !=2){
 			
 			printf ("Hp restant = %d\n", player.HP);
@@ -55,15 +56,25 @@ int main () {
 		
 		//Si (Players press 1 {alors nHpIa prend sa valeur actuelle -20 -=20}
 		
-		
+		// defense de IA 
 		
 		if (nAction == 1) {
 			
-			IA.HP-=50;
-			printf ("Attack Player\n");
 			
+			if(IA.defense == 1) {
+				
+				printf ("Attack in defence Player \n");
+				
+				IA.HP-=50/4;
+				
+			}
+			else if (IA.defense == 0) {
+		
+				printf ("Attack Player\n");
+				IA.HP-=50;
+				
+			}
 			
-	
 		}
 		if (nAction == 2) {
 			
@@ -76,12 +87,18 @@ int main () {
 		
 		//IA turn ---------------------------------------------------------------------------------------------
 		
+		//Ia defense renitialiser dans une valeur impossible
+		
+		IA.defense = 250;
+		
+		//IA choisi entre 0 et 1
+		
 		nAction=rand()%2;
 		
-		printf ("IA Turn\n");
-
+		printf ("--IA Turn--\n");
+		printf ("Hp restant DE IA = %d\n", IA.HP);
 	
-		if(nAction==0){
+		if(nAction==1){
 			
 			if (player.defense == 1) {
 				
@@ -101,9 +118,13 @@ int main () {
 			}
 			
 		}
-		//A faire defense IA
-		if(nAction==2){
+		//defense IA
+		
+	if(nAction==0){
 			
+			printf ("Defense IA\n");
+			
+			IA.defense = 1;
 			
 			
 		}
@@ -117,3 +138,4 @@ int main () {
 	
 	return 0 ;
 }
+
