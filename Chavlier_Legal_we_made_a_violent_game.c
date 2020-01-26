@@ -35,7 +35,9 @@ int main () {
 	while(IA.HP >0 && player.HP >0){
 		
 		// player turn ---------------------------------------------------------------------------------
-		printf ("\n--Player Turn--\n\n");
+		if(player.HP > 0){
+			printf ("\n--Player Turn--\n\n");
+		}
 		nAction = 0; 
 		player.defense = 0;
 		
@@ -55,56 +57,62 @@ int main () {
 			
 		}
 		
-		
-		while(nAction != 1 && nAction !=2){
+		//We let the player play only if he is still alive ಠ◡ಠ
+		if(player.HP > 0){
 			
-			printf ("Hp restants = %d\n\n", player.HP);
-			printf ("Choose your actions :\n\n");
-			printf (" 1) Attack\n");
-			printf (" 2) Defense\n");
 			
-			//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
-			scanf ("%d", &nAction);
-			printf("\n");
+			while(nAction != 1 && nAction !=2){
+				
+				printf ("Hp restants = %d\n\n", player.HP);
+				printf ("Choose your actions :\n\n");
+				printf (" 1) Attack\n");
+				printf (" 2) Defense\n");
+				
+				//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
+				scanf ("%d", &nAction);
+				printf("\n");
+				
 			
-		
-		}
-		
-		//if(condition d'activation){}
-		
-		//Si (Players press 1 {alors nHpIa prend sa valeur actuelle -20 -=20}
-		
-		if (nAction == 1) {
-			
-			// Genere un nombre aléatoire entre 33 et 50
-			nRandom = rand() % 18 + 33;
-			
-			// defense de IA 
-			if(IA.defense == 1) {
-				
-				nRandom = nRandom/4;
-				
-				IA.HP-=nRandom;
-				
-				printf ("The player hits IA in his defense, he makes %d damages.\n", nRandom);
-				
-			}
-			else if (IA.defense == 0) {
-		
-				IA.HP-=nRandom;
-				
-				printf("The player hits the IA, he makes %d damages.\n", nRandom);
-				
 			}
 			
+			//if(condition d'activation){}
+			
+			//Si (Players press 1 {alors nHpIa prend sa valeur actuelle -20 -=20}
+			
+			if (nAction == 1) {
+				
+				// Genere un nombre aléatoire entre 33 et 50
+				nRandom = rand() % 18 + 33;
+				
+				// defense de IA 
+				if(IA.defense == 1) {
+					
+					nRandom = nRandom/4;
+					
+					IA.HP-=nRandom;
+					
+					printf ("The player hits IA in his defense, he makes %d damages.\n", nRandom);
+					
+				}
+				else if (IA.defense == 0) {
+			
+					IA.HP-=nRandom;
+					
+					printf("The player hits the IA, he makes %d damages.\n", nRandom);
+					
+				}
+				
+			}
+			if (nAction == 2) {
+				
+				printf ("The player defends.\n");
+				
+				player.defense = 1;
+				
+			}
+			
 		}
-		if (nAction == 2) {
-			
-			printf ("The player defends.\n");
-			
-			player.defense = 1;
-			
-		}
+		
 		
 		
 		//IA turn ---------------------------------------------------------------------------------------------
@@ -119,8 +127,12 @@ int main () {
 		//sert a initialiser le while
 		nAction = -1;
 		
-		printf ("\n--IA Turn--\n");
-		printf ("Hp restants DE IA = %d\n\n", IA.HP);
+		if(IA.HP > 0){
+			printf ("\n--IA Turn--\n");
+			//I display this line just for information to the developers, it will be deleted for the final version
+			printf ("MP of IA = %d\n",IA.MP);
+			printf ("Hp restants DE IA = %d\n\n", IA.HP);
+		}
 		
 		// Le while sert ici a reroll l'action de l'IA si cette dernière vient a faire une action inutile comme utiliser l'antidote alors qu'elle n'est pas empoisonée de plus on ne rentre pas dans le tour de l'IA si elle est déja morte pour éviter qu'elle joue un tour en étant décédée ﾍ(￣▽￣*)ﾉ
 		while(nAction == -1 && IA.HP >0){
@@ -166,21 +178,32 @@ int main () {
 			// Poison
 			if(nAction == 2){
 				
-				// If the player is already poisonned, we reroll the action of the IA by putting -1 in nAction
-				if(player.poison >= 1){
-					
-					nAction = -1;
-					
+				//If the IA does not have enough MP it will reroll the action
+				if(IA.MP >= 5){
+				
+					// If the player is already poisonned, we reroll the action of the IA by putting -1 in nAction
+					if(player.poison >= 1){
+						
+						nAction = -1;
+						
+					}
+					else if(player.poison <= 0){
+						
+						//We remove 5 MP from the IA
+						IA.MP -= 5;
+						
+						// Poison the plyer for a number of turns between 2 and 5 ⊂(ô｡◎彡)
+						nRandom = rand()%4 + 2;
+						
+						player.poison = nRandom;
+						
+						printf("The IA casts Poison. \nYou are now poisonned.\n");
+						
+					}
+				
 				}
-				else if(player.poison <= 0){
-					
-					// Poison the plyer for a number of turns between 2 and 5 ⊂(ô｡◎彡)
-					nRandom = rand()%4 + 2;
-					
-					player.poison = nRandom;
-					
-					printf("The IA casts Poison. \nYou are now poisonned.\n");
-					
+				else if(IA.MP < 5){
+					nAction = -1;
 				}
 				
 			}
@@ -188,19 +211,27 @@ int main () {
 			//Antidote
 			if(nAction == 3){
 				
-				//We verify if the IA is poisonned to avoid him to cure himself while it is useless, we include the last turn of poison as a useless situation to cure ᕦ{ಠᗨರೃづ)
-				if(IA.poison <= 1){
+				//We verify if the IA have enough MP to cast Cure
+				if(IA.MP >= 2){
 					
-					//We reroll the action if the IA is not poisonned
-					nAction = -1;
-					
+					//We verify if the IA is poisonned to avoid him to cure himself while it is useless, we include the last turn of poison as a useless situation to cure ᕦ{ಠᗨರೃづ)
+					if(IA.poison <= 1){
+						
+						//We reroll the action if the IA is not poisonned
+						nAction = -1;
+						
+					}
+					else if(IA.poison >= 2){
+						
+						IA.poison = 0;
+						
+						printf("The IA casts Cure.\nThe IA is no longer poisonned.\n");
+						
+					}
+				
 				}
-				else if(IA.poison >= 2){
-					
-					IA.poison = 0;
-					
-					printf("The IA casts Cure.\nThe IA is no longer poisonned.\n");
-					
+				else if(IA.MP < 2){
+					nAction = -1;
 				}
 				
 			}
