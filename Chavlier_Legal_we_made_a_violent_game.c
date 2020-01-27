@@ -69,14 +69,16 @@ int main () {
 		//We let the player play only if he is still alive ಠ◡ಠ
 		if(player.HP > 0){
 			
-			while(nAction != 1 && nAction != 2 && nAction !=3 && nAction !=4){
+			while(nAction != 1 && nAction != 2 && nAction !=3 && nAction !=4 && nAction !=5){
 			
-				printf ("Hp restants = %d\n\n", player.HP);
+				printf ("Hp left = %d\n\n", player.HP);
+				printf ("Mp left = %d\n\n", player.MP);
 				printf ("Choose your actions :\n\n");
 				printf (" 1) Attack\n");
 				printf (" 2) Defense\n");
 				printf (" 3) Poison\n");
 				printf (" 4) Cure\n");
+				printf (" 5) Heal\n");
 			
 				//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
 				scanf ("%d", &nAction);
@@ -177,7 +179,28 @@ int main () {
 				}
 		
 			}
+			//heal du player entre 30 et 60
+			if (nAction == 5){
 			
+				if (player.MP >= 2){
+					
+					player.MP -=2;
+			
+				nRandom =rand()%31+30 ;
+				
+				player.HP += nRandom;    
+
+				printf("Players Heal HP up of %d\n\n", nRandom );
+					
+				}
+			
+			
+			else if(player.MP < 5){
+					
+					printf("But the player has not enough MP...\n\n");
+					
+				}
+			}
 		}			
 		
 		
@@ -198,7 +221,7 @@ int main () {
 			// reduction 1 turn poison
 			IA.poison -=1;
 			//apply poison damage
-			nRandom = rand()%11 + 10;
+			nRandom = rand()%31 + 30;
 			IA.HP -= nRandom;
 			printf("IA takes %d damages from the poison.\n",nRandom);
 			
@@ -217,10 +240,10 @@ int main () {
 		nAction = -1;
 		
 		if(IA.HP > 0){
-			printf ("\n--IA Turn--\n");
-			//I display this line just for information to the developers, it will be deleted for the final version
-			printf ("MP of IA = %d\n",IA.MP);
-			printf ("Hp restants DE IA = %d\n\n", IA.HP);
+			
+			printf ("\n--IA Turn--\n\n\n");
+			
+			printf ("Hp left of IA = %d\n\n", IA.HP);
 		}
 		
 		// Le while sert ici a reroll l'action de l'IA si cette dernière vient a faire une action inutile comme utiliser l'antidote alors qu'elle n'est pas empoisonée de plus on ne rentre pas dans le tour de l'IA si elle est déja morte pour éviter qu'elle joue un tour en étant décédée ﾍ(￣▽￣*)ﾉ
@@ -332,7 +355,30 @@ int main () {
 	
 	}
 	
-	printf("\n\n\nEndgame\n\n\n");
+	
+	// Qui gagne qui perd 
+	
+	//Si les HP de IA est a 0 le players gagne
+	if(IA.HP <= 0){
+		
+		printf ("\n\n\n YOU WIN\n\n\n");
+		
+		
+		
+	}
+	//Si les palyer.HP est a 0 players perd
+	if(player.HP <= 0){
+		
+		printf ("\n\n\n YOU LOSE\n\n\n");
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 
 	
 	return 0 ;
