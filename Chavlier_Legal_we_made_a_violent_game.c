@@ -487,6 +487,8 @@ int main () {
 			
 			// player [0][1][2] doivent gagner par rappoet a valeur de nDifficulty + random 
 			
+			//quand xp atteint une certaine valeurs alors lvl + 1
+			
 			
 		}
 		//Si les palyer.HP est a 0 players perd
