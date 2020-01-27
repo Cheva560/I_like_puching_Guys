@@ -11,6 +11,7 @@ struct Entity {
 	int MPmax;
 	int XP;
 	int lvl;
+	int dmg;
 	
 	
 };
@@ -19,7 +20,7 @@ int main () {
 
 	int nEndgame = 0;
 	
-	struct Entity playerMemory[3] = {250, 3, 0, 0, 5, 0, 0,      180, 6, 0, 0, 10, 0, 0,       200, 5, 0, 0, 7, 0, 0};
+	struct Entity playerMemory[3] = {250, 3, 0, 0, 5, 0, 1, 20,     180, 6, 0, 0, 10, 0, 1, 17,       200, 5, 0, 0, 7, 0, 1, 18};
 	
 	while(nEndgame == 0){
 
@@ -83,9 +84,9 @@ int main () {
 		
 		
 
-		struct Entity player[3] = {playerMemory[0].HP, playerMemory[0].MP, 0, 0, playerMemory[0].MPmax,0, 0,     playerMemory[1].HP, playerMemory[1].MP, 0, 0, playerMemory[1].MPmax,0, 0,       playerMemory[2].HP, playerMemory[2].MP, 0, 0, playerMemory[2].MPmax,0, 0};
+		struct Entity player[3] = {playerMemory[0].HP, playerMemory[0].MP, 0, 0, playerMemory[0].MPmax,0, 0, playerMemory[0].dmg,     playerMemory[1].HP, playerMemory[1].MP, 0, 0, playerMemory[1].MPmax,0, 0, playerMemory[1].dmg,      playerMemory[2].HP, playerMemory[2].MP, 0, 0, playerMemory[2].MPmax,0, 0, playerMemory[2].dmg};
 		
-		struct Entity IA[3] = {IAHP, 4, 0, 0, 7,      IAHP, 3, 0, 0, 10,       IAHP, 5, 0, 0, 5};
+		struct Entity IA[3] = {IAHP, 4, 0, 0, 7, 0, 0, 0,      IAHP, 3, 0, 0, 10, 0, 0, 0,      IAHP, 5, 0, 0, 5,0,0,0};
 		
 		int nAim = -1;
 		int nRandom = 0;
@@ -183,7 +184,7 @@ int main () {
 						}
 					
 						// Genere un nombre aléatoire entre 33 et 50
-						nRandom = rand() % 18 + 33;
+						nRandom = rand() % player[i].dmg + 33;
 					
 						// defense de IA 
 						if(IA[nAim].defense == 1) {
@@ -489,6 +490,36 @@ int main () {
 			
 			//quand xp atteint une certaine valeurs alors lvl + 1
 			
+			for(int i = 0; i < 3; i++){
+				
+				if(player[i].HP > 0){
+					
+					nRandom = rand()%2 + 2*nDifficulty;
+					
+					printf(" Player %d won %d Xp !\n", i+1, nRandom);
+					
+					playerMemory[i].XP += nRandom;
+					
+					if ( playerMemory[i].XP >= playerMemory[i].lvl * playerMemory[i].lvl + playerMemory[i].lvl ){
+						
+						playerMemory[i].lvl +=1;
+						
+						playerMemory[i].XP = 0;
+						
+						printf(" Player %d level up!\n Player %d is now level %d !\n", i+1, i+1, playerMemory[i].lvl);
+						
+						playerMemory[i].HP += 20;
+						
+						playerMemory[i].dmg += 2;
+						
+						playerMemory[i].MPmax +=1;
+						
+					}
+					
+				}
+				
+			}
+			
 			
 		}
 		//Si les palyer.HP est a 0 players perd
@@ -500,7 +531,7 @@ int main () {
 			
 		}
 	
-		printf("\n                 If you want to play again type 1 else type 0 :\n");
+		printf("\n\n\n\n\n\n                If you want to play again type 0 else type 1 :\n");
 		
 		nEndgame = 2;
 		while (nEndgame !=0 && nEndgame != 1){
