@@ -60,9 +60,9 @@ int main () {
 		printf ("Hp IA = %d\n\n", IAHP);
 	}
 
-	struct Entity player[3] = {200, 5, 0, 0, 5,      200, 0, 0, 0, 5,       200, 0, 0, 0, 5};
+	struct Entity player[3] = {250, 3, 0, 0, 5,      180, 6, 0, 0, 10,       200, 5, 0, 0, 7};
 	
-	struct Entity IA[3] = {IAHP, 5, 0, 0, 5,      IAHP, 0, 0, 0, 5,       IAHP, 0, 0, 0, 5};
+	struct Entity IA[3] = {IAHP, 4, 0, 0, 7,      IAHP, 3, 0, 0, 10,       IAHP, 5, 0, 0, 5};
 	
 	int nAim = -1;
 	int nRandom = 0;
@@ -111,7 +111,7 @@ int main () {
 			player[i].defense = 0;
 			
 			//IA prend dégats poison
-			if(player[i].poison >= 1){
+			if(player[i].poison >= 1 && player[i].HP > 0){
 				
 				// -1 turn poison
 				player[i].poison -=1;
@@ -132,7 +132,8 @@ int main () {
 				
 				while(nAction != 1 && nAction != 2 && nAction !=3 && nAction !=4){
 				
-					printf ("Hp restants = %d\n\n", player[i].HP);
+					printf ("HP left = %d\n", player[i].HP);
+					printf ("MP left = %d\n\n", player[i].MP);
 					printf ("Choose your actions :\n\n");
 					printf (" 1) Attack\n");
 					printf (" 2) Defense\n");
@@ -263,11 +264,11 @@ int main () {
 					
 					player[i].MP -=2;
 			
-				nRandom =rand()%31+30 ;
-				
-				player[i].HP += nRandom;    
+					nRandom =rand()%31+30 ;
+					
+					player[i].HP += nRandom;    
 
-				printf("Players Heal HP up of %d\n\n", nRandom );
+					printf("Players Heal HP up of %d\n\n", nRandom );
 					
 				}
 			
@@ -343,7 +344,7 @@ int main () {
 						nAim = rand()%3;
 					
 						//Attack IA
-						if(nAction==0){
+						if(nAction==0 && player[nAim].HP > 0){
 							
 							// Genere un nombre aléatoire entre 35 et 45
 							nRandom = rand() % 11 + 35;
@@ -368,6 +369,9 @@ int main () {
 							}
 							
 						}
+						else if ( player[nAim].HP <= 0 ){
+							nAction = -1;
+						}
 						
 						//defense IA
 						if(nAction==1){
@@ -379,7 +383,7 @@ int main () {
 						}
 						
 						// Poison
-						if(nAction == 2){
+						if(nAction == 2 && player[nAim].HP > 0){
 							
 							//If the IA does not have enough MP it will reroll the action
 							if(IA[i].MP >= 5){
@@ -406,7 +410,7 @@ int main () {
 								}
 							
 							}
-							else if(IA[i].MP < 5){
+							else if(IA[i].MP < 5 || player[nAim].HP <= 0){
 								nAction = -1;
 							}
 							
@@ -454,7 +458,7 @@ int main () {
 	// Qui gagne qui perd 
 	
 	//Si les HP de IA est a 0 le players gagne
-	if(IA[0].HP >0 && IA[1].HP > 0 && IA[2].HP > 0){
+	if(IA[0].HP <0 && IA[1].HP < 0 && IA[2].HP < 0){
 		
 		printf ("\n\n\n YOU WIN\n\n\n");
 		
@@ -462,7 +466,7 @@ int main () {
 		
 	}
 	//Si les palyer.HP est a 0 players perd
-	if(player[0].HP >0 && player[1].HP > 0 && player[2].HP > 0){
+	if(player[0].HP <0 && player[1].HP < 0 && player[2].HP < 0){
 		
 		printf ("\n\n\n YOU LOSE\n\n\n");
 		
