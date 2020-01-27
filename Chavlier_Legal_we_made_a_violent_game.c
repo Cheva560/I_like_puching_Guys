@@ -75,6 +75,7 @@ int main () {
 		
 		int nAim = -1;
 		int nRandom = 0;
+		int bStun = 0;
 		
 		
 		//for(int i = 0; condition de fonctionnement; i++){}
@@ -118,6 +119,7 @@ int main () {
 				nAction = 0; 
 				nAim = -1;
 				player[i].defense = 0;
+				bStun = 0;
 				
 				//IA prend dégats poison
 				if(player[i].poison >= 1 && player[i].HP > 0){
@@ -139,15 +141,24 @@ int main () {
 				//We let the player play only if he is still alive ಠ◡ಠ
 				if(player[i].HP > 0 && (IA[0].HP >0 || IA[1].HP > 0 || IA[2].HP > 0)){
 					
-					while(nAction != 1 && nAction != 2 && nAction !=3 && nAction !=4){
+					while(nAction != 1 && nAction != 2 && nAction !=3 && nAction !=4 && nAction !=5){
 					
 						printf ("HP left = %d\n", player[i].HP);
 						printf ("MP left = %d\n\n", player[i].MP);
 						printf ("Choose your actions :\n\n");
 						printf (" 1) Attack\n");
 						printf (" 2) Defense\n");
-						printf (" 3) Poison\n");
-						printf (" 4) Cure\n");
+						printf (" 3) Poison : 5MP\n");
+						printf (" 4) Cure : 2MP\n");
+						if(i == 0){
+							printf(" 5) Heal ! : 2MP\n");
+						}
+						if(i == 1){
+							printf(" 5) Thunder ! : 3MP\n");
+						}
+						if(i == 2){
+							printf(" 5) Super Stun ! : 4MP\n");
+						}
 					
 						//scanf ("%d", &nomVar); ==> l'utilisateur tape qqch dans la variable "maVar"
 						scanf ("%d", &nAction);
@@ -251,7 +262,7 @@ int main () {
 					
 								player[i].poison = 0;
 						
-								printf("The player %d is no longer poisonned!", i+1);
+								printf("The player %d is no longer poisonned!\n", i+1);
 							
 							}
 						
@@ -265,29 +276,97 @@ int main () {
 				
 					}
 					
-				}
 				
-				if (nAction == 5){
 				
-					if (player[i].MP >= 2){
+					//Heal
+					if (nAction == 5 && i == 0){
 						
-						player[i].MP -=2;
-				
-						nRandom =rand()%31+30 ;
-						
-						player[i].HP += nRandom;    
+						printf("Player 1 casts Heal...\n");
+					
+						if (player[i].MP >= 2){
+							
+							player[i].MP -=2;
+					
+							nRandom =rand()%31+30;
+							
+							player[i].HP += nRandom;    
 
-						printf("Players Heal HP up of %d\n\n", nRandom );
+							printf("Player 1 Heals himself of %d\n", nRandom );
+							
+						}
+						else if(player[i].MP < 2){
+							
+							printf("But the player 1 has not enough MP...\n");
+							
+						}
+					}
+					
+					// Thunder
+					if (nAction == 5 && i == 1){
+						
+						printf("Player 2 casts Thunder\n");
+						
+						if (player[i].MP >= 3){
+							
+							player[i].MP -=3;
+							
+							printf("All the IAs are damaged by the thunder !\n");
+
+							for (int i = 0; i<3; i++){
+								
+								if(IA[i].HP > 0){
+									
+									nRandom =rand()%50 + 10;
+									
+									IA[i].HP += nRandom;    
+
+									printf("IA %d take %d damage.\n", i+1, nRandom );
+							
+								}
+							
+							}
+							
+						}
+						else if(player[i].MP < 3){
+							
+							printf("But the player 2 has not enough MP...\n");
+							
+						}
 						
 					}
-				
-				
-				else if(player[i].MP < 5){
+					
+					//Super stun
+					if (nAction == 5 && i == 2){
 						
-						printf("But the player has not enough MP...\n\n");
+						printf("Player 3 casts Super Stun !\n");
+						
+						if (player[i].MP >= 4){
+							
+							player[i].MP -=4;
+							
+							printf("He has 50\% chances to stun all the IAs !\n");
+
+							nRandom = rand()%2;
+							
+							if(nRandom == 0){
+								printf("Too bad ! It failed...\n");
+							}
+							else{
+								printf("It worked ! you can now play again !\n");
+								bStun =1;
+							}
+							
+						}
+						else if(player[i].MP < 4){
+							
+							printf("But the player 3 has not enough MP...\n");
+							
+						}
 						
 					}
+					
 				}
+				
 			}			
 			
 			
@@ -297,7 +376,7 @@ int main () {
 			
 			
 			//IA turn ---------------------------------------------------------------------------------------------
-			if((IA[0].HP >0 || IA[1].HP > 0 || IA[2].HP > 0) && (player[0].HP >0 || player[1].HP > 0 || player[2].HP > 0)){
+			if((IA[0].HP >0 || IA[1].HP > 0 || IA[2].HP > 0) && (player[0].HP >0 || player[1].HP > 0 || player[2].HP > 0) && bStun == 0){
 				
 				printf ("\n-----------------------------------------------IA Turn    (>_<)\n");
 
@@ -483,7 +562,7 @@ int main () {
 			
 		}
 		
-		printf("\n                 If you want to play again type 1 else type 0 :\n");
+		printf("\n                 If you want to play again type 0 else type 1 :\n");
 		
 		nEndgame = 2;
 		while (nEndgame !=0 && nEndgame != 1){
