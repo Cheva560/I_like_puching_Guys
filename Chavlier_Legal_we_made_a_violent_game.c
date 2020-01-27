@@ -14,10 +14,55 @@ struct Entity {
 int main () { 
 
 	srand (time (NULL));
-	
-	struct Entity player = {200, 5, 0, 0};
-	struct Entity IA = {200, 5, 0, 0};
+	int IAHP = 100;
 	int nAction = 0;
+	
+	while(nAction != 1 && nAction != 2 && nAction != 3 && nAction != 4){
+			
+				//choix diffilculté
+				printf ("Choose your actions :\n\n");
+				printf (" 1) EASY\n");
+				printf (" 2) NORMAL\n");
+				printf (" 3) HARD\n");
+				printf (" 4) SATAN\n");
+			
+				
+				scanf ("%d", &nAction);
+				printf("\n");
+			
+	}
+			if (nAction == 1){
+							
+				IAHP = 150; 
+							
+				printf ("Hp IA= %d\n\n", IAHP);
+			}
+					
+			if (nAction == 2){
+					
+				IAHP = 200;
+						
+				printf ("Hp IA = %d\n\n", IAHP);
+			}
+					
+			if (nAction == 3){
+					
+				IAHP = 300; 
+						
+				printf ("Hp IA = %d\n\n", IAHP);
+			}
+					
+			if (nAction == 4){
+							
+				IAHP = 400;
+							
+				printf ("Hp IA = %d\n\n", IAHP);
+			}	
+			
+			
+	struct Entity player = {200, 5, 0, 0};
+	struct Entity IA = {IAHP , 5, 0, 0};
+	
 	int nRandom = 0;
 	
 	//for(int i = 0; condition de fonctionnement; i++){}
@@ -27,6 +72,7 @@ int main () {
 		printf ("\n");
 		
 	}
+	
 	
 	// OR = || 		AND = &&        NO = !
 	//OR vérification des 2 valeurs.
@@ -179,7 +225,7 @@ int main () {
 				}
 		
 			}
-			//heal du player entre 30 et 60
+			//heal du players entre 30 et 60
 			if (nAction == 5){
 			
 				if (player.MP >= 2){
