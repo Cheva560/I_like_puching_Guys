@@ -11,6 +11,7 @@ struct Entity {
 	int MPmax;
 	int XP;
 	int lvl;
+	int dmg;
 	
 	
 };
@@ -19,15 +20,16 @@ int main () {
 
 	int nEndgame = 0;
 	
-	struct Entity playerMemory[3] = {250, 3, 0, 0, 5, 0, 0,      180, 6, 0, 0, 10, 0, 0,       200, 5, 0, 0, 7, 0, 0};
+	struct Entity playerMemory[3] = {250, 3, 0, 0, 5, 0, 1, 20,     180, 6, 0, 0, 10, 0, 1, 17,       200, 5, 0, 0, 7, 0, 1, 18};
 	
 	while(nEndgame == 0){
 
 		srand (time (NULL));
 		int IAHP = 100;
 		int nAction = 0;
+		int nDifficulty = 0;
 		
-		while(nAction != 1 && nAction != 2 && nAction != 3 && nAction != 4){
+		while(nDifficulty != 1 && nDifficulty != 2 && nDifficulty != 3 && nDifficulty != 4 && nDifficulty != 666){
 			
 			//choix diffilculté
 			printf ("Choose your actions :\n\n");
@@ -37,41 +39,54 @@ int main () {
 			printf (" 4) SATAN\n");
 
 			
-			scanf ("%d", &nAction);
+			scanf ("%d", &nDifficulty);
 			printf("\n");
 		
 		}
-		if (nAction == 1){
+		if (nDifficulty == 1){
 
 			IAHP = 150; 
 		
 			printf ("Hp IA= %d\n\n", IAHP);
 		}
 		
-		if (nAction == 2){
+		if (nDifficulty == 2){
 			
 			IAHP = 200;
 			
 			printf ("Hp IA = %d\n\n", IAHP);
 		}
 		
-		if (nAction == 3){
+		if (nDifficulty == 3){
 			
 			IAHP = 300; 
 			
 			printf ("Hp IA = %d\n\n", IAHP);
 		}
 		
-		if (nAction == 4){
+		if (nDifficulty == 4){
 		
 			IAHP = 400;
 			
 			printf ("Hp IA = %d\n\n", IAHP);
-		}
 
-		struct Entity player[3] = {playerMemory[0].HP, playerMemory[0].MP, 0, 0, playerMemory[0].MPmax,0, 0,     playerMemory[1].HP, playerMemory[1].MP, 0, 0, playerMemory[1].MPmax,0, 0,       playerMemory[2].HP, playerMemory[2].MP, 0, 0, playerMemory[2].MPmax,0, 0};
+		}
 		
-		struct Entity IA[3] = {IAHP, 4, 0, 0, 7,      IAHP, 3, 0, 0, 10,       IAHP, 5, 0, 0, 5};
+		
+		//test chuuuuut
+		if (nDifficulty == 666){
+
+
+			IAHP = 10; 
+		
+			
+		}
+		
+		
+
+		struct Entity player[3] = {playerMemory[0].HP, playerMemory[0].MP, 0, 0, playerMemory[0].MPmax,0, 0, playerMemory[0].dmg,     playerMemory[1].HP, playerMemory[1].MP, 0, 0, playerMemory[1].MPmax,0, 0, playerMemory[1].dmg,      playerMemory[2].HP, playerMemory[2].MP, 0, 0, playerMemory[2].MPmax,0, 0, playerMemory[2].dmg};
+		
+		struct Entity IA[3] = {IAHP, 4, 0, 0, 7, 0, 0, 0,      IAHP, 3, 0, 0, 10, 0, 0, 0,      IAHP, 5, 0, 0, 5,0,0,0};
 		
 		int nAim = -1;
 		int nRandom = 0;
@@ -180,7 +195,7 @@ int main () {
 						}
 					
 						// Genere un nombre aléatoire entre 33 et 50
-						nRandom = rand() % 18 + 33;
+						nRandom = rand() % player[i].dmg + 33;
 					
 						// defense de IA 
 						if(IA[nAim].defense == 1) {
@@ -546,10 +561,43 @@ int main () {
 		// Qui gagne qui perd 
 		
 		//Si les HP de IA est a 0 le players gagne
-		if(IA[0].HP <0 && IA[1].HP < 0 && IA[2].HP < 0){
+		if(IA[0].HP <=0 && IA[1].HP <= 0 && IA[2].HP <= 0){
 			
 			printf ("\n\n\n YOU WIN\n\n\n");
 			
+			// player [0][1][2] doivent gagner par rappoet a valeur de nDifficulty + random 
+			
+			//quand xp atteint une certaine valeurs alors lvl + 1
+			
+			for(int i = 0; i < 3; i++){
+				
+				if(player[i].HP > 0){
+					
+					nRandom = rand()%2 + 2*nDifficulty;
+					
+					printf(" Player %d won %d Xp !\n", i+1, nRandom);
+					
+					playerMemory[i].XP += nRandom;
+					
+					if ( playerMemory[i].XP >= playerMemory[i].lvl * playerMemory[i].lvl + playerMemory[i].lvl ){
+						
+						playerMemory[i].lvl +=1;
+						
+						playerMemory[i].XP = 0;
+						
+						printf(" Player %d level up!\n Player %d is now level %d !\n", i+1, i+1, playerMemory[i].lvl);
+						
+						playerMemory[i].HP += 20;
+						
+						playerMemory[i].dmg += 2;
+						
+						playerMemory[i].MPmax +=1;
+						
+					}
+					
+				}
+				
+			}
 			
 			
 		}
@@ -561,8 +609,8 @@ int main () {
 			
 			
 		}
-		
-		printf("\n                 If you want to play again type 0 else type 1 :\n");
+	
+		printf("\n\n\n\n\n\n                If you want to play again type 0 else type 1 :\n");
 		
 		nEndgame = 2;
 		while (nEndgame !=0 && nEndgame != 1){
