@@ -26,8 +26,9 @@ int main () {
 		srand (time (NULL));
 		int IAHP = 100;
 		int nAction = 0;
+		int nDifficulty = 0;
 		
-		while(nAction != 1 && nAction != 2 && nAction != 3 && nAction != 4){
+		while(nDifficulty != 1 && nDifficulty != 2 && nDifficulty != 3 && nDifficulty != 4 && nDifficulty != 666){
 			
 			//choix diffilculté
 			printf ("Choose your actions :\n\n");
@@ -37,37 +38,50 @@ int main () {
 			printf (" 4) SATAN\n");
 
 			
-			scanf ("%d", &nAction);
+			scanf ("%d", &nDifficulty);
 			printf("\n");
 		
 		}
-		if (nAction == 1){
+		if (nDifficulty == 1){
 
 			IAHP = 150; 
 		
 			printf ("Hp IA= %d\n\n", IAHP);
 		}
 		
-		if (nAction == 2){
+		if (nDifficulty == 2){
 			
 			IAHP = 200;
 			
 			printf ("Hp IA = %d\n\n", IAHP);
 		}
 		
-		if (nAction == 3){
+		if (nDifficulty == 3){
 			
 			IAHP = 300; 
 			
 			printf ("Hp IA = %d\n\n", IAHP);
 		}
 		
-		if (nAction == 4){
+		if (nDifficulty == 4){
 		
 			IAHP = 400;
 			
 			printf ("Hp IA = %d\n\n", IAHP);
+
 		}
+		
+		
+		//test chuuuuut
+		if (nDifficulty == 666){
+
+
+			IAHP = 10; 
+		
+			
+		}
+		
+		
 
 		struct Entity player[3] = {playerMemory[0].HP, playerMemory[0].MP, 0, 0, playerMemory[0].MPmax,0, 0,     playerMemory[1].HP, playerMemory[1].MP, 0, 0, playerMemory[1].MPmax,0, 0,       playerMemory[2].HP, playerMemory[2].MP, 0, 0, playerMemory[2].MPmax,0, 0};
 		
@@ -467,10 +481,11 @@ int main () {
 		// Qui gagne qui perd 
 		
 		//Si les HP de IA est a 0 le players gagne
-		if(IA[0].HP <0 && IA[1].HP < 0 && IA[2].HP < 0){
+		if(IA[0].HP <=0 && IA[1].HP <= 0 && IA[2].HP <= 0){
 			
 			printf ("\n\n\n YOU WIN\n\n\n");
 			
+			// player [0][1][2] doivent gagner par rappoet a valeur de nDifficulty + random 
 			
 			
 		}
@@ -482,7 +497,7 @@ int main () {
 			
 			
 		}
-		
+	
 		printf("\n                 If you want to play again type 1 else type 0 :\n");
 		
 		nEndgame = 2;
